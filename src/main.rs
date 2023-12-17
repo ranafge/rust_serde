@@ -1,12 +1,26 @@
-use serde::{Serialize, Deserialize};
+#[allow(unused, dead_code, unused_imports)]
+use serde::{Serialize, Deserialize, };
+use serde_json::Result;
 
-#[derive(Serialize, Deserialize)]
-
-struct Foo {
-    a: u64,
-    b: String
+#[derive(Deserialize, Clone)]
+struct Player {
+    pub team: Team
+}
+#[derive(Deserialize, Clone)]
+pub struct Team {
+    pub id: String
 }
 
 fn main() {
-    println!("Hello, world!");
+    let data  = br#"{"team": {"id": "42"}}"#;
+    match serde_json::from_slice::<Player>(data) {
+        Ok(player) => {
+            println!("Team: {}", player.team.id);
+        }
+        Err(err) => {
+            eprintln!("{err}")
+        }
+    }
+
+  
 }
